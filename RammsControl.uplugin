@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "RammsControl",
+	"Description": "Dependency-light control-surface model for RAMMS: how a robot describes its controls, and how any input source drives them. No UMG, no physics.",
+	"Category": "Data Collection & Simulation",
+	"CreatedBy": "ATDev",
+	"CreatedByURL": "github.com/rammp-org/ramms-control",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "RammsControl",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
