@@ -33,6 +33,24 @@ RammsCore included — had to take the whole UI plugin, its Slate surface and it
 streaming dependency, to get five structs and a handful of interfaces. Nothing
 in RammsCore draws a widget.
 
+## If the editor refuses to start after this move
+
+```
+LogInit: Warning: Still incompatible or missing module: RammsControl
+```
+
+means a stale module manifest. `RammsControl` used to build into the RammsUI
+plugin, and `Plugins/RammsUI/Binaries/<Platform>/UnrealEditor.modules` still
+lists it after the move while the dylib it names is gone, so the engine
+resolves the module to a file that no longer exists. Delete the plugin's build
+output and rebuild:
+
+```sh
+rm -rf Plugins/RammsUI/Binaries Plugins/RammsUI/Intermediate
+```
+
+A clean checkout never sees this; only trees that built the old layout do.
+
 ## Using it
 
 A robot exposes controls by implementing the provider and sink (in RAMMS,
