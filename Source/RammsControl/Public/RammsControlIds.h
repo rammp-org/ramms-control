@@ -113,8 +113,9 @@ namespace RammsControlIds
 		 *
 		 * An Action rather than a value, because it is the one command a
 		 * position pad cannot express by pointing: the pad says "go here", and
-		 * what it lacks is a way to say "go back". Where "back" is belongs to
-		 * the mechanism, not to whoever pressed the button.
+		 * what it lacks is a way to say "go back". The destination is defined
+		 * by the mechanism rather than by the caller, which is why it takes no
+		 * value at all.
 		 */
 		inline const TCHAR* ResetSuffix()
 		{
