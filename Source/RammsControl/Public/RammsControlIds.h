@@ -107,6 +107,25 @@ namespace RammsControlIds
 		{
 			return FName(*FString::Printf(TEXT("linkage.%s%s"), *Component, JogForwardSuffix()));
 		}
+
+		/**
+		 * Send the endpoint back to its rest pose.
+		 *
+		 * An Action rather than a value, because it is the one command a
+		 * position pad cannot express by pointing: the pad says "go here", and
+		 * what it lacks is a way to say "go back". The destination is defined
+		 * by the mechanism rather than by the caller, which is why it takes no
+		 * value at all.
+		 */
+		inline const TCHAR* ResetSuffix()
+		{
+			return TEXT(".reset");
+		}
+
+		inline FName Reset(const FString& Component)
+		{
+			return FName(*FString::Printf(TEXT("linkage.%s%s"), *Component, ResetSuffix()));
+		}
 	} // namespace Linkage
 
 	/** Group names, for discovering per-instance controls off the surface. */

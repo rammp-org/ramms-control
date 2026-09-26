@@ -115,6 +115,31 @@ struct RAMMSCONTROL_API FRammsControlAxis
 	FName PairedAxis;
 
 	/**
+	 * The boundary of what a paired pair can actually reach, when that is not
+	 * the rectangle its two Ranges describe.
+	 *
+	 * A 5-bar is the case this exists for: its endpoint sweeps a curved region
+	 * whose fore/aft width varies about six-fold with height, so the two axis
+	 * Ranges together claim a box far larger than the mechanism, and each
+	 * Range on its own is the extent rather than the slice available at the
+	 * other axis's current value. Neither spelling can draw the shape, and a
+	 * pad that cannot draw it cannot show where the endpoint is inside it.
+	 *
+	 * Points are (horizontal, vertical) in the pair's own units -- horizontal
+	 * being `PairedAxis`, vertical this axis -- traced in order and closed
+	 * implicitly, so a renderer needs no interpretation beyond a polyline.
+	 * Carried by the axis with the lower `Order`, the same one that is the
+	 * vertical half of a paired control, so there is one region per pair and
+	 * not two disagreeing halves.
+	 *
+	 * Empty means what it says: no region was published, and the pair is
+	 * whatever the two Ranges describe. A renderer must handle that, since
+	 * every paired control that is not a 5-bar leaves it empty.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Control")
+	TArray<FVector2D> RegionOutline;
+
+	/**
 	 * Choices for an Enum control, in index order. Empty for every other kind.
 	 * A panel renders these as a selector; the control's value is the index of
 	 * the active one.
