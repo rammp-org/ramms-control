@@ -17,12 +17,22 @@ enum class ERammsControlInputMode : uint8
 	/** The action's value (× Scale) is the axis value; Completed releases it.
 	 *  A 2-D action feeds ControlId with X and ControlIdY with Y. */
 	Axis UMETA(DisplayName = "Axis"),
-	/** Triggered fires the Action control once. */
+	/** Fires the control once per press, when the action first triggers (a
+	 *  Hold trigger on the mapping makes it wait): an Action control, or an
+	 *  Enum one's next choice (drive.mode: the next drive mode). */
 	Action UMETA(DisplayName = "Action"),
 	/** While the action is held, the Position / Velocity control's target
 	 *  moves at RatePerSecond × value (the held-key behaviour of the
 	 *  keyboard teleop's motor groups), clamped to the control's range. */
 	IncrementRate UMETA(DisplayName = "Increment at rate"),
+	/** A drive stick, as Axis, with X following the surface's pairing: Y
+	 *  feeds ControlIdY; X feeds the control the surface pairs with it
+	 *  (FRammsControlAxis::PairedAxis: turn on a differential drive, strafe on
+	 *  a holonomic one), else ControlId; Z feeds ControlIdZ unless X or Y
+	 *  already does. So a 3-axis stick's twist turns a holonomic base and
+	 *  does nothing on a differential one, whose stick already turns it --
+	 *  re-resolved whenever the surface changes, as a drive-mode switch does. */
+	Stick UMETA(DisplayName = "Stick (X follows the pairing)"),
 };
 
 USTRUCT(BlueprintType)
@@ -38,7 +48,8 @@ struct RAMMSCONTROL_API FRammsControlInputBinding
 
 	/** Control fed by the action's value (its X for a 2-D / 3-D action). May be
 	 *  a wildcard ("linkage.*.height", "motor.*_front_crank"): every control on
-	 *  the surface whose Id matches is driven. */
+	 *  the surface whose Id matches is driven. For Stick, the fallback for X
+	 *  when ControlIdY has no partner on the surface. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Binding")
 	FName ControlId;
 
