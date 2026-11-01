@@ -32,7 +32,8 @@ public:
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Ramms|Control")
 	bool SetAxis(FName Id, float Value, ERammsControlSource Source);
 
-	/** Fire an Action control. */
+	/** Fire an Action control, or step an Enum one to its next choice where
+	 *  its owner offers that (drive.mode: the next drive mode). */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Ramms|Control")
 	bool TriggerAction(FName Id, ERammsControlSource Source);
 

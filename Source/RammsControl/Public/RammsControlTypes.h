@@ -23,7 +23,8 @@ enum class ERammsControlKind : uint8
 	Action	   UMETA(DisplayName = "Action"),
 	/** One of a fixed set of choices. The value is the index into
 	 *  FRammsControlAxis::EnumLabels, so it still travels as a float and every
-	 *  sink signature stays (FName, float). */
+	 *  sink signature stays (FName, float). TriggerAction steps it to the next
+	 *  choice, where its owner offers that (a mode button). */
 	Enum	   UMETA(DisplayName = "Enum"),
 };
 
