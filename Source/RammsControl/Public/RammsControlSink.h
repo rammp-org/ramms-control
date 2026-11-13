@@ -57,4 +57,10 @@ public:
 	 *  False when there is no target: nothing commanded yet, or released. */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Ramms|Control")
 	bool GetAxisTarget(FName Id, float& OutTarget) const;
+
+	/** The words a Text control reports now (a status line). False when the
+	 *  control is unknown or reports none. A sink with no Text controls need
+	 *  not implement it. */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Ramms|Control")
+	bool GetAxisText(FName Id, FText& OutText) const;
 };
