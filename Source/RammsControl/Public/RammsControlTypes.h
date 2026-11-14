@@ -13,6 +13,8 @@
  *    travel, an endpoint height). Persists until changed.
  *  - Velocity: a target rate, held until changed.
  *  - Action: momentary; TriggerAction only (reset, home, next camera).
+ *  - Enum: one of a fixed set of choices (below).
+ *  - Text: words the robot reports (below).
  */
 UENUM(BlueprintType)
 enum class ERammsControlKind : uint8
@@ -25,7 +27,25 @@ enum class ERammsControlKind : uint8
 	 *  FRammsControlAxis::EnumLabels, so it still travels as a float and every
 	 *  sink signature stays (FName, float). TriggerAction steps it to the next
 	 *  choice, where its owner offers that (a mode button). */
-	Enum	   UMETA(DisplayName = "Enum"),
+	Enum UMETA(DisplayName = "Enum"),
+	/** Words the robot reports -- a status such as "Waiting: the front omni
+	 *  wheels to clear the curb" -- read with IRammsControlSink::GetAxisText.
+	 *  Always read-only: nothing is commanded through it. Its value is how
+	 *  much the words need the reader (ERammsControlTextSeverity as a float),
+	 *  so a panel can colour them; a panel renders it as wrapped text. */
+	Text UMETA(DisplayName = "Text"),
+};
+
+/** What a Text control's value means: how much its words need the reader. */
+UENUM(BlueprintType)
+enum class ERammsControlTextSeverity : uint8
+{
+	/** Information: idle, or under way. */
+	Info UMETA(DisplayName = "Info"),
+	/** Needs the reader's attention: paused, or waiting for something. */
+	Attention UMETA(DisplayName = "Attention"),
+	/** Stopped by a fault. */
+	Fault UMETA(DisplayName = "Fault"),
 };
 
 /** Units of a control's value, for display and for input scaling. */
@@ -149,6 +169,7 @@ struct RAMMSCONTROL_API FRammsControlAxis
 	TArray<FText> EnumLabels;
 
 	bool  IsAction() const { return Kind == ERammsControlKind::Action; }
+	bool  IsText() const { return Kind == ERammsControlKind::Text; }
 	float Clamp(float Value) const { return Range.X < Range.Y ? FMath::Clamp(Value, static_cast<float>(Range.X), static_cast<float>(Range.Y)) : Value; }
 };
 
